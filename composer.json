@@ -1,0 +1,12 @@
+{
+	"name": "acuminata/imagetool",
+	"description": "Image Manipulation",
+	"authors": [
+		{
+			"name": "Mathew Berry",
+			"email": "contact@mathewberry.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"require": {}
+}

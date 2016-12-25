@@ -3,13 +3,14 @@
 namespace Acuminata\Imagetool;
 
 use Acuminata\Imagetool\Traits\CropTrait;
+use Acuminata\Imagetool\Traits\FaceDetectionTrait;
 use Acuminata\Imagetool\Traits\ResizeTrait;
 use Acuminata\Imagetool\Traits\SaveTrait;
 use Illuminate\Http\Request;
 
 class Image {
 
-    use CropTrait, ResizeTrait, SaveTrait;
+    use CropTrait, ResizeTrait, SaveTrait, FaceDetectionTrait;
 
     /**
      * The cloned version of the original image.
@@ -61,7 +62,7 @@ class Image {
             throw new \Exception('[ImageTool] Invalid image');
         }
 
-        self::$original_image = imagecreatefromstring($content);
+        self::$original_image = self::$virtual_image = imagecreatefromstring($content);
 
         return new static;
     }
@@ -105,14 +106,9 @@ class Image {
 
     public function stream()
     {
-        header('Content-Type: image/png');
+        header('Content-Type: image/jpeg');
 
-        if(!empty(self::$virtual_image)) {
-            imagejpeg(self::$virtual_image, null, self::$compression_level);
-            imagedestroy(self::$virtual_image);
-        } else {
-            imagejpeg(self::$original_image);
-            imagedestroy(self::$original_image);
-        }
+        imagejpeg(self::$virtual_image, null, self::$compression_level);
+        imagedestroy(self::$virtual_image);
     }
 }

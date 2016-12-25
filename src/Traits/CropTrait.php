@@ -4,8 +4,6 @@ namespace Acuminata\Imagetool\Traits;
 
 trait CropTrait
 {
-    protected static $virtual_image;
-
     public function crop($square_size)
     {
         $original_width = imagesx(self::$original_image);

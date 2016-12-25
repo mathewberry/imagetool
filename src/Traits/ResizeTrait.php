@@ -4,8 +4,6 @@ namespace Acuminata\Imagetool\Traits;
 
 trait ResizeTrait
 {
-    protected static $virtual_image;
-
     public function resizeY($desired)
     {
         $width = imagesx(self::$original_image);

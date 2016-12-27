@@ -9,7 +9,7 @@ trait FaceDetectionTrait
         $canvas,
         $reduced_canvas;
 
-    public function detectFaces($detection_data = 'detection.dat')
+    public function detectFace($detection_data = 'detection.dat')
     {
         $this->canvas = self::$virtual_image;
 
@@ -50,7 +50,7 @@ trait FaceDetectionTrait
         return $this;
     }
 
-    public function streamDetectedFaces()
+    public function streamFaceData()
     {
         $color = imagecolorallocate($this->canvas, 255, 0, 0);
 
@@ -66,6 +66,24 @@ trait FaceDetectionTrait
 
         header('Content-type: image/jpeg');
         imagejpeg($this->canvas, null, 100);
+    }
+
+    public function cropFace($size)
+    {
+        /*dump('Width: ' . $this->face['w'],
+            'Current X: ' . $this->face['x'],
+            'New X: ' . ($this->face['x'] - ($size / 2)),
+            'Current Y: ' . $this->face['y'],
+            'New Y: ' . ($this->face['y'] - ($size / 2)));*/
+
+        $x = $this->face['x'] / 2 + $size - $this->face['x'];
+        $y = $this->face['y'] / 2 + $size - $this->face['y'];
+
+        self::$virtual_image = $this->canvas;
+
+        $this->coordinateCrop($this->face['x'], $this->face['y'], $this->face['w'], $x, $y, $size);
+
+        return $this;
     }
 
     protected function imageStats($canvas)

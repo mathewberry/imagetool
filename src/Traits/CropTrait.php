@@ -32,16 +32,16 @@ trait CropTrait
         imagecopyresampled($smaller_image, self::$original_image, 0, 0, 0, 0, $new_width, $new_height, $original_width,
             $original_height);
 
-        if($new_width>$new_height){
-            $difference = $new_width-$new_height;
+        if($new_width > $new_height){
+            $difference = $new_width - $new_height;
             $half_difference = round($difference / 2);
 
-            imagecopyresampled(self::$virtual_image, $smaller_image, 0 - $half_difference+1, 0, 0, 0,
+            imagecopyresampled(self::$virtual_image, $smaller_image, 0 - $half_difference + 1, 0, 0, 0,
                 $square_size + $difference, $square_size, $new_width, $new_height);
         }
 
-        if($new_height>$new_width) {
-            $difference = $new_height-$new_width;
+        if($new_height > $new_width) {
+            $difference = $new_height - $new_width;
             $half_difference =  round($difference/2);
 
             imagecopyresampled(self::$virtual_image, $smaller_image, 0, 0 - $half_difference+1, 0, 0, $square_size,
@@ -53,6 +53,19 @@ trait CropTrait
                 $new_width, $new_height);
         }
 
+        return $this;
+    }
+
+    public function coordinateCrop($src_x, $src_y, $src_wh, $dst_x, $dst_y, $dst_wh)
+    {
+        $sized = imagecreatetruecolor($dst_wh, $dst_wh);
+
+        $width = imagesx(self::$virtual_image);
+        $height = imagesy(self::$virtual_image);
+
+        imagecopyresampled($sized, self::$virtual_image, 0, 0, 0, 0, $dst_wh, $dst_wh, $width, $height);
+
+        imagecopyresampled(self::$virtual_image, $sized, $dst_x, $dst_y, $src_x, $src_y, $dst_wh, $dst_wh, $src_wh, $src_wh);
         return $this;
     }
 }
